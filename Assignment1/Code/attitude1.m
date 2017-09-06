@@ -31,7 +31,7 @@ r=2;
 I_cg = m*r^2*eye(3);
 k_d = 20;
 k_p = 1;
-I = I_cg;%diag( [100 100 100]);%[50 100 80]);       % inertia matrix
+I = I_cg;      % inertia matrix
 I_inv = inv(I);
 
 % constants
@@ -97,4 +97,3 @@ legend('\omega_1', '\omega_2', '\omega_3')
 
 figure()
 plot(t,q),xlabel('time (s)'),ylabel(''),title('Quaternion'), legend('\eta', '\epsilon_1', '\epsilon_2', '\epsilon_3')
-%(:,2:end)

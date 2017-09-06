@@ -58,21 +58,20 @@ for i = 1:N+1,
    qd = euler2q(phi_d,theta_d,psi_d);   % transform initial Euler angles to q
    
    %omega_d
-   phi_dot   = deg2rad*cos(.1*t);
+   phi_dot   = deg2rad*cos(.1*t); %derivati
    theta_dot = deg2rad*0;
    psi_dot   = deg2rad*-.05*15*sin(.05*t);
    
    T_inv = [1 0         -sin(theta);
             0 cos(phi)  cos(theta)*sin(phi);
-            0 -sin(phi) cos(theta)*cos(phi)];
+            0 -sin(phi) cos(theta)*cos(phi)]; %Calculate the tranformation matrix from Euler to inertial
    
    w_d = T_inv*[phi_dot theta_dot psi_dot]';
    
    %Control law
-   qd_inv = [qd(1); -1*qd(2:4)];
-   q_tilde = quatmultiply(quatconj(qd'), q')';
-   q_tilde = quatmultiply(qd_inv', q');
-   tau = -k_d*eye(3)*(w-w_d)-k_p*q_tilde(2:4);%[1 2 1]';               % control law
+   qd_inv = [qd(1); -1*qd(2:4)]; %Calculate the inverse of the desired quaternion
+   q_tilde = qmult(qd_inv, q); %Calculate the error between the quaternions
+   tau = -k_d*eye(3)*(w-w_d)-k_p*q_tilde(2:4); % control law
 
    [phi,theta,psi] = q2euler(q); % transform q to Euler angles
    [J,J1,J2] = quatern(q);       % kinematic transformation matrices

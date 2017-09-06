@@ -32,7 +32,7 @@ r=2;
 I_cg = m*r^2*eye(3);
 k_d = 300;
 k_p = 10;
-I = I_cg;%diag( [100 100 100]);%[50 100 80]);       % inertia matrix
+I = I_cg;      % inertia matrix
 I_inv = inv(I);
 
 % constants
@@ -53,16 +53,16 @@ table = zeros(N+1,17);        % memory allocation
 for i = 1:N+1,
    t = (i-1)*h;                  % time
    
-   %Reference signal
+   %Reference Euler angle signals
    phi_d   = deg2rad*10*sin(.1*t);
    theta_d = deg2rad*0;
    psi_d   = deg2rad*15*cos(.05*t);
    qd = euler2q(phi_d,theta_d,psi_d);   % transform initial Euler angles to q
    
    %Control law
-   qd_inv = [qd(1); -1*qd(2:4)];
-   q_tilde = qmult(qd_inv, q);
-   tau = -k_d*eye(3)*w-k_p*q_tilde(2:4);%[1 2 1]';               % control law
+   qd_inv = [qd(1); -1*qd(2:4)]; %Calculate the inverse of the desired quaternion
+   q_tilde = qmult(qd_inv, q); %Calculate the error between the quaternions
+   tau = -k_d*eye(3)*w-k_p*q_tilde(2:4); % control law
 
    [phi,theta,psi] = q2euler(q); % transform q to Euler angles
    [J,J1,J2] = quatern(q);       % kinematic transformation matrices
