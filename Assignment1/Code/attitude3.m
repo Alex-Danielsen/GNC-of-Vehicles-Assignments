@@ -22,7 +22,7 @@ clear all
 close all
 %% USER INPUTS
 h = 0.1;                     % sample time (s)
-N  = 5000;                    % number of samples
+N  = 4000;                    % number of samples
 
 % model parameters
 m=100;
@@ -38,7 +38,7 @@ deg2rad = pi/180;
 rad2deg = 180/pi;
 
 phi = 10*deg2rad;            % initial Euler angles
-theta = -10*deg2rad;
+theta = -5*deg2rad;
 psi = 15*deg2rad;
 
 q = euler2q(phi,theta,psi);   % transform initial Euler angles to q
@@ -60,7 +60,7 @@ for i = 1:N+1,
    %omega_d
    phi_dot   = deg2rad*cos(.1*t);
    theta_dot = deg2rad*0;
-   psi_dot   = deg2rad*-.05*15*cos(.05*t);
+   psi_dot   = deg2rad*-.05*15*sin(.05*t);
    
    T_inv = [1 0         -sin(theta);
             0 cos(phi)  cos(theta)*sin(phi);
@@ -70,6 +70,7 @@ for i = 1:N+1,
    
    %Control law
    qd_inv = [qd(1); -1*qd(2:4)];
+   q_tilde = quatmultiply(quatconj(qd'), q')';
    q_tilde = qmult(qd_inv, q);
    tau = -k_d*eye(3)*(w-w_d)-k_p*q_tilde(2:4);%[1 2 1]';               % control law
 
@@ -79,7 +80,7 @@ for i = 1:N+1,
    q_dot = J2*w;                        % quaternion kinematics
    w_dot = I_inv*(Smtrx(I*w)*w + tau);  % rigid-body kinetics
    
-   table(i,:) = [t q' phi theta psi w' tau' phi_d theta_d phi_d];  % store data in table
+   table(i,:) = [t q' phi theta psi w' tau' phi_d theta_d psi_d];  % store data in table
    
    q = q + h*q_dot;	             % Euler integration
    w = w + h*w_dot;

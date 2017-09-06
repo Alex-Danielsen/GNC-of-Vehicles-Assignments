@@ -24,7 +24,7 @@ close all
 
 %% USER INPUTS
 h = 0.1;                     % sample time (s)
-N  = 20000;                    % number of samples
+N  = 5000;                    % number of samples
 
 % model parameters
 m=100;
@@ -70,7 +70,7 @@ for i = 1:N+1,
    q_dot = J2*w;                        % quaternion kinematics
    w_dot = I_inv*(Smtrx(I*w)*w + tau);  % rigid-body kinetics
    
-   table(i,:) = [t q' phi theta psi w' tau' phi_d theta_d phi_d];  % store data in table
+   table(i,:) = [t q' phi theta psi w' tau' phi_d theta_d psi_d];  % store data in table
    
    q = q + h*q_dot;	             % Euler integration
    w = w + h*w_dot;
@@ -102,8 +102,12 @@ subplot(515),plot(t,tau),xlabel('time (s)'),ylabel('Nm'),title('\tau'),grid
 figure()
 plot(t,w),xlabel('time (s)'),ylabel('deg/s'),title('w')
 
+% figure()
+% plot(t,q),xlabel('time (s)'),ylabel('epsilon'),title('epsilon')
+
 figure()
-plot(t,q),xlabel('time (s)'),ylabel('epsilon'),title('epsilon')
+plot(t,q),xlabel('time (s)'),ylabel(''),title('Quaternion'), legend('\eta', '\epsilon_1', '\epsilon_2', '\epsilon_3')
+
 
 figure()
 subplot(321),plot(t,phi), hold on, plot(t,phi_d),xlabel('time (s)'),ylabel('deg'),title('\phi')

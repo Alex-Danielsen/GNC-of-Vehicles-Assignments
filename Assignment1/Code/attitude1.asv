@@ -78,11 +78,11 @@ tau     = table(:,12:14);
 
 clf
 figure(gcf)
-subplot(311),plot(t,phi),xlabel('time (s)'),ylabel('deg'),title('Euler Angles'),grid, hold on,
-plot(t,theta),xlabel('time (s)'),ylabel('deg'),grid
-plot(t,psi),xlabel('time (s)'),ylabel('deg'),grid, legend('\phi', '\theta', '\psi')
-subplot(312),plot(t,w),xlabel('time (s)'),ylabel('deg/s'),title('Angular Velocity'),grid, legend('\omega_1', '\omega_2', '\omega_3')
-subplot(313),plot(t,tau),xlabel('time (s)'),ylabel('Nm'),title('Control Input'),grid, legend('\tau_1', '\tau_2', '\tau_3')
+subplot(511),plot(t,phi),xlabel('time (s)'),ylabel('deg'),title('\phi'),grid
+subplot(512),plot(t,theta),xlabel('time (s)'),ylabel('deg'),title('\theta'),grid
+subplot(513),plot(t,psi),xlabel('time (s)'),ylabel('deg'),title('\psi'),grid
+subplot(514),plot(t,w),xlabel('time (s)'),ylabel('deg/s'),title('w'),grid
+subplot(515),plot(t,tau),xlabel('time (s)'),ylabel('Nm'),title('\tau'),grid
 
 figure()
 plot(t,phi),xlabel('time (s)'),ylabel('deg'),title('\phi'), hold on
@@ -93,8 +93,7 @@ legend('\phi', '\theta', '\psi')
 
 figure()
 plot(t,w),xlabel('time (s)'),ylabel('deg/s'),title('w')
-legend('\omega_1', '\omega_2', '\omega_3')
+legend('\omega_1', 
 
 figure()
-plot(t,q),xlabel('time (s)'),ylabel(''),title('Quaternion'), legend('\eta', '\epsilon_1', '\epsilon_2', '\epsilon_3')
-%(:,2:end)
+plot(t,q(:,2:end)),xlabel('time (s)'),ylabel(''),title('epsilon'), legend('\epsilon_1', '\epsilon_2', '\epsilon_3')
