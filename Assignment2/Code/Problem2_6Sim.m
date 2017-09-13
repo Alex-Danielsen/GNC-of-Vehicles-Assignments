@@ -49,7 +49,7 @@ rad2deg = 180/pi;
 % initial Euler angles
 phi = -1*deg2rad;            
 theta = 2*deg2rad;
-psi = 10*deg2rad;
+psi = 0*deg2rad;
 
 quat = euler2q(phi,theta,psi);   % transform initial Euler angles to q
 
@@ -72,7 +72,7 @@ table = zeros(N+1,28);        % memory allocation
 %% FOR-END LOOP
 for i = 1:N+1,
    t = (i-1)*h;                  % time
-   tau = [0 0 0]';%[1 2 1]';      % control law
+   tau = [0 0 0]';               % control law
    
    %Change rudder angle at 700 seconds
    if t > 700
