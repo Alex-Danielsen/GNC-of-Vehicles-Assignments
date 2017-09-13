@@ -22,7 +22,7 @@ clear all
 close all
 %% USER INPUTS
 h = 0.1;                     % sample time (s)
-N  = 10000;                    % number of samples
+N  = 30000;                    % number of samples
 
 % model parameters
 U = 1.5; %m/s
@@ -85,10 +85,12 @@ for i = 1:N+1,
    r_dot = (delta*K - r) / T;
    
    %body frame velocities
-   u = U*cos(r_dot*t);
-   v = U*sin(r_dot*t);
+   u = U*cos(r*t);
+   v = U*sin(r*t);
    w = 0;
    v_b = [u v w]';
+   
+%    v_b = v_r_b + v_c_b;
    
    p_dot_n = J1*v_b; %translational kinematics
    quat_dot = J2*w_b;                        % quaternion kinematics
@@ -132,14 +134,14 @@ U_r     = table(:,28);
 
 clf
 figure(gcf)
-subplot(511),plot(t,phi),xlabel('time (s)'),ylabel('deg'),title('\phi'),grid
-subplot(512),plot(t,theta),xlabel('time (s)'),ylabel('deg'),title('\theta'),grid
-subplot(513),plot(t,psi),xlabel('time (s)'),ylabel('deg'),title('\psi'),grid
-subplot(514),plot(t,w_b),xlabel('time (s)'),ylabel('deg/s'),title('w'),grid
-subplot(515),plot(t,tau),xlabel('time (s)'),ylabel('Nm'),title('\tau'),grid
+subplot(311),plot(t,phi),xlabel('time (s)'),ylabel('deg'),title('\phi'),grid
+subplot(312),plot(t,theta),xlabel('time (s)'),ylabel('deg'),title('\theta'),grid
+subplot(313),plot(t,psi),xlabel('time (s)'),ylabel('deg'),title('\psi'),grid
+% subplot(514),plot(t,w_b),xlabel('time (s)'),ylabel('deg/s'),title('w'),grid
+% subplot(515),plot(t,tau),xlabel('time (s)'),ylabel('Nm'),title('\tau'),grid
 
-% figure()
-% plot(t,w_b),legend('p', 'q', 'r'),xlabel('time (s)'),ylabel('deg/s'),title('w')
+figure()
+plot(t,w_b),legend('p', 'q', 'r'),xlabel('time (s)'),ylabel('deg/s'),title('w')
 
 figure()
 plot(t,quat),xlabel('time (s)'),ylabel('epsilon'),title('epsilon')
@@ -154,6 +156,7 @@ h1 = plot(x_n_1,y_n_1); hold on
 h2 = plot(x_n_2,y_n_2, '-r');
 %xlim([min(x_n) max(x_n)]), ylim([min(y_n) max(y_n)])
 title('trajectory of the boat in 2-d'), xlabel('east (meters)'), ylabel('north (meters)')
+legend('first 700 secs, \delta = 5 deg', 'after 700 secs, \delta = 10 deg')
 line2arrow(h1)
 line2arrow(h2)
 
