@@ -54,13 +54,13 @@ phi = -1*deg2rad;
 theta = 2*deg2rad;
 psi = 10*deg2rad;
 
-q = euler2q(phi,theta,psi);   % transform initial Euler angles to q
+quat = euler2q(phi,theta,psi);   % transform initial Euler angles to q
 
 p_n = [0 0 10]';              % Initial NED position
 w_b = [0 0 0]';               % Initial angular rates
 
 %rudder
-delta = 5; %initial rudder angle
+delta = 5*deg2rad; %initial rudder angle
 K = .1;
 T = 50;
 zeta_p = .2;
@@ -79,11 +79,11 @@ for i = 1:N+1,
    
    %Change rudder angle at 700 seconds
    if t > 700
-       delta = 10;
+       delta = 10*deg2rad;
    end
 
-   [phi,theta,psi] = q2euler(q); % transform q to Euler angles
-   [J,J1,J2] = quatern(q);       % kinematic transformation matrices
+   [phi,theta,psi] = q2euler(quat); % transform q to Euler angles
+   [J,J1,J2] = quatern(quat);       % kinematic transformation matrices
    
    %Rotational dynamics from the rudder
    p = w_b(1); q1 = w_b(2); r = w_b(3);
@@ -98,8 +98,8 @@ for i = 1:N+1,
    v_b = [u v w]';
    
    p_dot_n = J1*v_b; %translational kinematics
-   q_dot = J2*w_b;                        % quaternion kinematics
-   w_dot = I_inv*(Smtrx(I*w_b)*w_b + tau);  % rigid-body kinetics
+   quat_dot = J2*w_b;                        % quaternion kinematics
+   w_dot = [p_dot; q_dot; r_dot]; %I_inv*(Smtrx(I*w_b)*w_b + tau);  % rigid-body kinetics
    
    %calculate relative velocities
    v_r_b = v_b - v_c_b;
@@ -110,19 +110,19 @@ for i = 1:N+1,
    beta   = atan2(v_b(2), v_b(1));
    chi = psi + beta;
    
-   table(i,:) = [t q' phi theta psi w_b' tau' p_n' v_b' v_r_b' beta_r beta chi U U_r];  % store data in table
+   table(i,:) = [t quat' phi theta psi w_b' tau' p_n' v_b' v_r_b' beta_r beta chi U U_r];  % store data in table
    
-   q = q + h*q_dot;	             % Euler integration
+   quat = quat + h*quat_dot;	             % Euler integration
    w_b = w_b + h*w_dot;
    p_n = p_n + h*p_dot_n;
    
    
-   q  = q/norm(q);               % unit quaternion normalization
+   quat  = quat/norm(quat);               % unit quaternion normalization
 end 
 
 %% PLOT FIGURES
 t       = table(:,1);  
-q       = table(:,2:5); 
+quat       = table(:,2:5); 
 phi     = rad2deg*table(:,6);
 theta   = rad2deg*table(:,7);
 psi     = rad2deg*table(:,8);
@@ -146,18 +146,24 @@ subplot(514),plot(t,w_b),xlabel('time (s)'),ylabel('deg/s'),title('w'),grid
 subplot(515),plot(t,tau),xlabel('time (s)'),ylabel('Nm'),title('\tau'),grid
 
 figure()
-plot(t,w_b),xlabel('time (s)'),ylabel('deg/s'),title('w')
+plot(t,radw_b),legend('p', 'q', 'r'),xlabel('time (s)'),ylabel('deg/s'),title('w')
 
 figure()
-plot(t,q),xlabel('time (s)'),ylabel('epsilon'),title('epsilon')
+plot(t,quat),xlabel('time (s)'),ylabel('epsilon'),title('epsilon')
 
-y_n = p_n(:, 1);
-x_n = p_n(:, 2);
+indices = (700/h);
+y_n_1 = p_n(1:indices, 1);
+x_n_1 = p_n(1:indices, 2);
+y_n_2 = p_n(indices:end, 1);
+x_n_2 = p_n(indices:end, 2);
 figure()
-h1 = plot(x_n,y_n);
-xlim([min(x_n) max(x_n)]), ylim([min(y_n) max(y_n)])
+h1 = plot(x_n_1,y_n_1); hold on
+h2 = plot(x_n_2,y_n_2, '-r');
+%xlim([min(x_n) max(x_n)]), ylim([min(y_n) max(y_n)])
 title('trajectory of the boat in 2-d'), xlabel('east (meters)'), ylabel('north (meters)')
 line2arrow(h1)
+line2arrow(h2)
+
 
 figure()
 subplot(211), plot(t, v_b),  legend('u = u_r', 'v = v_r', 'w = w_r'), ylabel('velocity components (m/s)'), title('relative velocity in body frame, no current')
