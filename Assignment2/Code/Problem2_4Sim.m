@@ -60,7 +60,7 @@ w_b = [0 0 0]';               % Initial angular rates
 
 [J, J11, J22] = eulerang(phi, theta, psi);
 
-table = zeros(N+1,23);        % memory allocation
+table = zeros(N+1,26);        % memory allocation
 
 
 
@@ -84,8 +84,14 @@ for i = 1:N+1,
    
    %calculate relative velocities
    v_r_b = v_b - v_c_b;
+   U_r = norm(v_r_b);
    
-   table(i,:) = [t q' phi theta psi w_b' tau' p_n' v_b' v_r_b'];  % store data in table
+   %Calculate sideslip, crab and course angles
+   beta_r = asin(v_r_b(1)/ U_r);
+   beta   = asin(v_b(1)/U);
+   chi = psi -beta;
+   
+   table(i,:) = [t q' phi theta psi w_b' tau' p_n' v_b' v_r_b' beta_r beta chi];  % store data in table
    
    q = q + h*q_dot;	             % Euler integration
    w_b = w_b + h*w_dot;
@@ -106,6 +112,9 @@ tau     = table(:,12:14);
 p_n     = table(:,15:17);
 v_b     = table(:,18:20);
 v_r_b   = table(:,21:23);
+beta_r  = table(:,24);
+beta    = table(:,25);
+chi  = table(:,26);
 
 clf
 figure(gcf)
@@ -124,12 +133,20 @@ plot(t,q),xlabel('time (s)'),ylabel('epsilon'),title('epsilon')
 x_n = p_n(:, 1);
 y_n = p_n(:, 2);
 figure()
-plot(x_n,y_n)
+h1 = plot(x_n,y_n);
 xlim([min(x_n) max(x_n)]), ylim([min(y_n) max(y_n)])
 title('trajectory of the boat in 2-d'), xlabel('east (meters)'), ylabel('north (meters)')
+line2arrow(h1)
 
 figure()
-subplot(211), plot(t, v_b),  legend('u', 'v', 'w'), ylabel('velocity components (m/s)'), title('velocity in body frame, no current')
+subplot(211), plot(t, v_b),  legend('u = u_r', 'v = v_r', 'w = w_r'), ylabel('velocity components (m/s)'), title('relative velocity in body frame, no current')
 subplot(212), plot(t, v_r_b), legend('u_r', 'v_r', 'w_r'), ylabel('velocity components (m/s)'), xlabel('time'), title('relative velocity in body frame, with current')
 
+figure()
+plot(t, rad2deg*[beta_r, beta, chi]), legend('sideslip', 'crab', 'course')
+xlabel('time (sec)'), ylabel('angle (deg)'), title('sideslip, course, and crab angles, with current')
+
+figure()
+plot(t, rad2deg*[beta, beta, chi]), legend('sideslip', 'crab', 'course')
+xlabel('time (sec)'), ylabel('angle (deg)'), title('sideslip, course, and crab angles, no current')
 
