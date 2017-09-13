@@ -25,9 +25,9 @@ h = 0.1;                     % sample time (s)
 N  = 30000;                    % number of samples
 
 % model parameters
-U = 1.5; %m/s
+U_r = 1.5; %m/s
 R = 100;
-omega = U/R;
+omega = U_r/R;
 
 %Current parameters
 U_c     = 0.6;
@@ -89,8 +89,8 @@ for i = 1:N+1,
    r_dot = (delta*K - r) / T;
    
    %body frame velocities
-   u = U*cos(r*t);
-   v = U*sin(r*t);
+   u = U_r*cos(r*t);
+   v = U_r*sin(r*t);
    w = 0;
    v_r_b = [u v w]';
    
@@ -99,13 +99,14 @@ for i = 1:N+1,
    
    v_b = v_r_b + v_c_b;
    
+   
    p_dot_n = J1*v_b; %translational kinematics
    quat_dot = J2*w_b;                        % quaternion kinematics
    w_dot = [p_dot; q_dot; r_dot]; %I_inv*(Smtrx(I*w_b)*w_b + tau);  % rigid-body kinetics
    
    %calculate relative velocities
 %    v_r_b = v_b - v_c_b;
-   U_r = norm(v_r_b);
+   U = norm(v_b);
    
    %Calculate sideslip, crab and course angles
    beta_r = atan2(v_r_b(2), v_r_b(1));
@@ -176,10 +177,10 @@ figure()
 plot(t, rad2deg*[beta_r, beta, chi]), legend('\beta_r = sideslip', '\beta = crab', '\chi = course')
 xlabel('time (sec)'), ylabel('angle (deg)'), title('sideslip, course, and crab angles, with current')
 
-figure()
-plot(t, rad2deg*[beta, beta, chi]), legend('\beta_r = sideslip', '\beta = crab', '\chi = course')
-xlabel('time (sec)'), ylabel('angle (deg)'), title('sideslip, course, and crab angles, no current')
+% figure()
+% plot(t, rad2deg*[beta, beta, chi]), legend('\beta_r = sideslip', '\beta = crab', '\chi = course')
+% xlabel('time (sec)'), ylabel('angle (deg)'), title('sideslip, course, and crab angles, no current')
 
 figure()
-plot(t, [U, U_r]), legend('speed = relative speed without current', 'relative speed with current')
+plot(t, [U, U_r]), legend('speed', 'relative speed')
 xlabel('speed (m/s)'), ylabel('time (sec)'), title('speed over time')
