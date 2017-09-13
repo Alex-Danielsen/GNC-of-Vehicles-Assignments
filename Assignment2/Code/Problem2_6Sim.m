@@ -38,6 +38,10 @@ R_b2f = rotz(-beta_c)*roty(alpha_c); %Rotation from body to flow
 R_f2b = inv(R_b2f); % Rotation matrix from flow to body
 v_c_b = R_f2b*v_c_f;
 
+v_c_n = [U_c*cos(alpha_c)*cos(beta_c);
+         U_c*sin(beta_c);
+         U_c*sin(alpha_c)*cos(beta_c)]; % Current velocity in ned
+
 % constants
 deg2rad = pi/180;   
 rad2deg = 180/pi;
@@ -88,16 +92,19 @@ for i = 1:N+1,
    u = U*cos(r*t);
    v = U*sin(r*t);
    w = 0;
-   v_b = [u v w]';
+   v_r_b = [u v w]';
    
-%    v_b = v_r_b + v_c_b;
+   %Current in body frame
+   v_c_b = inv(J1)*v_c_n;
+   
+   v_b = v_r_b + v_c_b;
    
    p_dot_n = J1*v_b; %translational kinematics
    quat_dot = J2*w_b;                        % quaternion kinematics
    w_dot = [p_dot; q_dot; r_dot]; %I_inv*(Smtrx(I*w_b)*w_b + tau);  % rigid-body kinetics
    
    %calculate relative velocities
-   v_r_b = v_b - v_c_b;
+%    v_r_b = v_b - v_c_b;
    U_r = norm(v_r_b);
    
    %Calculate sideslip, crab and course angles
