@@ -28,13 +28,6 @@ N  = 10000;                    % number of samples
 U = 1.5; %m/s
 R = 100;
 omega = U/R;
-m=100;
-r=2;
-I_cg = m*r^2*eye(3);
-k_d = 20;
-k_p = 1;
-I = I_cg;%diag( [100 100 100]);%[50 100 80]);       % inertia matrix
-I_inv = inv(I);
 
 %Current parameters
 U_c     = 0.6;
@@ -52,7 +45,7 @@ rad2deg = 180/pi;
 % initial Euler angles
 phi = -1*deg2rad;            
 theta = 2*deg2rad;
-psi = 10*deg2rad;
+psi = 0*deg2rad;
 
 quat = euler2q(phi,theta,psi);   % transform initial Euler angles to q
 
@@ -63,7 +56,7 @@ w_b = [0 0 0]';               % Initial angular rates
 delta = 5*deg2rad; %initial rudder angle
 K = .1;
 T = 50;
-zeta_p = .2;
+zeta_p = .1;
 zeta_q = .2;
 omega_p = .1;
 omega_q = .05;
@@ -75,7 +68,7 @@ table = zeros(N+1,28);        % memory allocation
 %% FOR-END LOOP
 for i = 1:N+1,
    t = (i-1)*h;                  % time
-   tau = [0 0 0]';%[1 2 1]';      % control law
+   tau = [0 0 0]';               % control law
    
    %Change rudder angle at 700 seconds
    if t > 700
@@ -145,8 +138,8 @@ subplot(513),plot(t,psi),xlabel('time (s)'),ylabel('deg'),title('\psi'),grid
 subplot(514),plot(t,w_b),xlabel('time (s)'),ylabel('deg/s'),title('w'),grid
 subplot(515),plot(t,tau),xlabel('time (s)'),ylabel('Nm'),title('\tau'),grid
 
-figure()
-plot(t,radw_b),legend('p', 'q', 'r'),xlabel('time (s)'),ylabel('deg/s'),title('w')
+% figure()
+% plot(t,w_b),legend('p', 'q', 'r'),xlabel('time (s)'),ylabel('deg/s'),title('w')
 
 figure()
 plot(t,quat),xlabel('time (s)'),ylabel('epsilon'),title('epsilon')
