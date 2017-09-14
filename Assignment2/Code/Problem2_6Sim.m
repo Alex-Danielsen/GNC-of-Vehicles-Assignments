@@ -65,8 +65,7 @@ zeta_q = .2;
 omega_p = .1;
 omega_q = .05;
 
-table = zeros(N+1,28);        % memory allocation
-
+table = zeros(N+1,31);        % memory allocation
 
 
 %% FOR-END LOOP
@@ -88,37 +87,36 @@ for i = 1:N+1,
    q_dot = -2*zeta_q*omega_q*q1 - omega_q^2*theta;
    r_dot = (delta*K - r) / T;
    
-   %body frame velocities
-   u = U_r*cos(r*t);
-   v = U_r*sin(r*t);
-   w = 0;
-   v_r_b = [u v w]';
+   %body frame relative velocities
+   u_r = U_r*cos(r*t);
+   v_r = U_r*sin(r*t);
+   w_r = 0;
+   v_r_b = [u_r v_r w_r]';
    
    %Current in body frame
    v_c_b = inv(J1)*v_c_n;
    
+   %Velocity in body and NED
    v_b = v_r_b + v_c_b;
-   
+   v_n = J1*v_b;   
    
    p_dot_n = J1*v_b; %translational kinematics
    quat_dot = J2*w_b;                        % quaternion kinematics
    w_dot = [p_dot; q_dot; r_dot]; %I_inv*(Smtrx(I*w_b)*w_b + tau);  % rigid-body kinetics
    
-   %calculate relative velocities
-%    v_r_b = v_b - v_c_b;
+   %Calculate speed
    U = norm(v_b);
    
    %Calculate sideslip, crab and course angles
    beta_r = atan2(v_r_b(2), v_r_b(1));
    beta   = atan2(v_b(2), v_b(1));
-   chi = psi + beta;
+   chi = mod(psi + beta + pi, 2*pi) - pi;
    
-   table(i,:) = [t quat' phi theta psi w_b' tau' p_n' v_b' v_r_b' beta_r beta chi U U_r];  % store data in table
+   table(i,:) = [t quat' phi theta psi w_b' tau' p_n' v_b' v_r_b' beta_r beta chi U U_r v_n'];  % store data in table
    
    quat = quat + h*quat_dot;	             % Euler integration
    w_b = w_b + h*w_dot;
    p_n = p_n + h*p_dot_n;
-   
    
    quat  = quat/norm(quat);               % unit quaternion normalization
 end 
@@ -139,6 +137,7 @@ beta    = table(:,25);
 chi     = table(:,26);
 U       = table(:,27);
 U_r     = table(:,28);
+v_n     = table(:,29:31);
 
 clf
 figure(gcf)
@@ -152,7 +151,7 @@ figure()
 plot(t,w_b),legend('p', 'q', 'r'),xlabel('time (s)'),ylabel('deg/s'),title('w')
 
 figure()
-plot(t,quat),xlabel('time (s)'),ylabel('epsilon'),title('epsilon')
+plot(t,p_n),legend('N', 'E', 'D'),xlabel('time (s)'),ylabel('m'),title('p_n')
 
 indices = (700/h);
 y_n_1 = p_n(1:indices, 1);
@@ -170,17 +169,24 @@ line2arrow(h2)
 
 
 figure()
-subplot(211), plot(t, v_b),  legend('u = u_r', 'v = v_r', 'w = w_r'), ylabel('velocity components (m/s)'), title('relative velocity in body frame, no current')
-subplot(212), plot(t, v_r_b), legend('u_r', 'v_r', 'w_r'), ylabel('velocity components (m/s)'), xlabel('time'), title('relative velocity in body frame, with current')
+subplot(211), plot(t, v_b),  legend('u', 'v', 'w'), ylabel('velocity components (m/s)'), title('velocity in body frame')
+subplot(212), plot(t, v_r_b), legend('u_r', 'v_r', 'w_r'), ylabel('velocity components (m/s)'), xlabel('time'), title('relative velocity in body frame')
+
+figure()
+plot(t, v_n), legend('u', 'v', 'w'), ylabel('velocity components (m/s)'), title('velocity in NED frame')
 
 figure()
 plot(t, rad2deg*[beta_r, beta, chi]), legend('\beta_r = sideslip', '\beta = crab', '\chi = course')
-xlabel('time (sec)'), ylabel('angle (deg)'), title('sideslip, course, and crab angles, with current')
-
-% figure()
-% plot(t, rad2deg*[beta, beta, chi]), legend('\beta_r = sideslip', '\beta = crab', '\chi = course')
-% xlabel('time (sec)'), ylabel('angle (deg)'), title('sideslip, course, and crab angles, no current')
+xlabel('time (sec)'), ylabel('angle (deg)'), title('sideslip, course, and crab angles')
 
 figure()
 plot(t, [U, U_r]), legend('speed', 'relative speed')
-xlabel('speed (m/s)'), ylabel('time (sec)'), title('speed over time')
+ylabel('speed (m/s)'), xlabel('time (sec)'), title('speed over time')
+
+delta_input = ones(N + 1,1)*5;
+delta_input = delta_input + [zeros(indices,1); ones(N-indices + 1,1)]*5;
+figure()
+plot(t, delta_input)
+legend('\delta')
+ylabel('degrees'), xlabel('time (sec)'), title('rudder input')
+ylim([0,15])
