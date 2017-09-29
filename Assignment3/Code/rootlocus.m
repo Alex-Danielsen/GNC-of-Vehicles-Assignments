@@ -1,6 +1,5 @@
 clear all
 close all
-clc
 
 n = 3;
 
