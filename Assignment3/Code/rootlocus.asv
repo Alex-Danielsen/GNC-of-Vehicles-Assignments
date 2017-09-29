@@ -1,0 +1,44 @@
+clear all
+close all
+
+n = 3;
+
+modelParms
+k_i_phi_vec = [-100:.01:100];
+poles = zeros(n, length(k_i_phi_vec));
+diffVec = zeros(n, length(k_i_phi_vec));
+
+pos_correction = zeros(n,1);
+for i = 1:n
+    pos_correction(i) = i;
+end
+
+for i= 1:length(k_i_phi_vec)
+    poles(:,i) = roots([1 (alpha_phi1+alpha_phi2*k_d_phi) (alpha_phi2*k_p_phi) (alpha_phi2*k_i_phi_vec(i))]);
+    if(i>1)
+        diffVec(:, i) = poles(:,i)-poles(:,i-1);
+    end
+    
+    poles_copy = poles(:,i);
+    for j = 1:n
+        poles(j,i) = poles_copy(pos_correction(j));
+    end
+    
+    if(norm(diffVec(:,i)) > .1)
+        poles_copy = poles(:,i);
+        for j = 1:3
+            for k = 1:3
+                if(diffVec(j,i) < poles(j,i) - poles_copy(k))
+                    corr_position(j) = k;
+                end
+            end
+        end
+        for j = 1:n
+            poles(j,i) = poles_copy(pos_correction(j));
+        end
+    end
+end
+
+h1 = plot(poles(1,:)); hold on, h2 = plot(poles(2,:)); h3 = plot(poles(3,:));
+line2arrow(h1); line2arrow(h2); line2arrow(h3);
+grid on
