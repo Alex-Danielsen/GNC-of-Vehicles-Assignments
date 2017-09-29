@@ -17,4 +17,4 @@ figure()
 phi.data = rad2deg(phi.data); phi_c.data = rad2deg(phi_c.data);
 plot(phi); hold on; plot(phi_c)
 legend('\phi', '\phi^c')
-title('Yaw'); xlabel('time (sec)'); ylabel('Yaw (deg)')
+title('Roll'); xlabel('time (sec)'); ylabel('Yaw (deg)')

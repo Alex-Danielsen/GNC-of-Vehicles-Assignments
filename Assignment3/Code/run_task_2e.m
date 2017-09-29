@@ -10,5 +10,3 @@ sim('Sim2e.slx');
 %% Plot results
 plotting
 
-
-
