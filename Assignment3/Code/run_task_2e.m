@@ -5,6 +5,7 @@ close all
 modelParms
 
 %% Run Sim
+sim('input.slx');
 sim('Sim2e.slx');
 
 %% Plot results

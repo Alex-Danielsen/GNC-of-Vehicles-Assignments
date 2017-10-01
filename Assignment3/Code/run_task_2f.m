@@ -5,7 +5,8 @@ close all
 modelParms
 
 %% Run Sim
-sim('Sim2f.slx')
+sim('input.slx');
+sim('Sim2f.slx');
 
 %% Plot results
 plotting
