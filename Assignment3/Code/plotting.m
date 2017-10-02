@@ -14,20 +14,24 @@ chi_pl   = timeseries(rad2deg(chi.data)  , chi.time);
 chi_c_pl = timeseries(rad2deg(chi_c.data), chi_c.time);
 phi_c_pl = timeseries(rad2deg(phi_c.data), phi_c.time);
 
+
 %Course
 figure()
+subplot(311)
 plot(chi_pl); hold on; plot(chi_c_pl)
 legend('\chi', '\chi^c')
-title('Course'); xlabel('time (sec)'); ylabel('course (deg)')
+title({modelName, strcat('\zeta_\chi = ', num2str(zeta_chi), '   W_\chi = ', num2str(W_chi)), 'Course'});  
+ylabel('course (deg)'); %xlabel('time (sec)');
 
 %Input
-figure()
+subplot(312)
 plot(delta_a_pl); hold on; if(exist('x', 'var')); plot(delta_a_c_pl); end
 legend('\delta_a', '\delta_a^c')
-title('Aeleron Input'); xlabel('time (sec)'); ylabel('aeileron deflection (deg)')
+title('Aeleron Input');  ylabel('aeileron deflection (deg)'); xlabel('');
 
-%Yaw
-figure()
+%Roll
+subplot(313)
 plot(phi_pl); hold on; plot(phi_c_pl)
 legend('\phi', '\phi^c')
-title('Roll'); xlabel('time (sec)'); ylabel('Yaw (deg)')
+title('Roll'); xlabel('Time (sec)'); ylabel('Yaw (deg)')
+

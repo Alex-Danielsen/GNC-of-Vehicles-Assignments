@@ -1,3 +1,10 @@
+%% Sim Parms
+total_time = 100;
+
+%Input values
+
+
+%% Model Parameters
 %Constants
 alpha_phi1 = 2.87;
 alpha_phi2 = -0.65;
@@ -11,7 +18,7 @@ delta_a_max = deg2rad(25); %rad
 zeta_phi    = 0.707; %damping factor
 
 %parms to course loop
-W_chi       = 5;  %Beard says to choose at least 5
+W_chi       = 10;  %Beard says to choose at least 5
 zeta_chi    = 1; %Start guess at critical damping
 
 
@@ -44,5 +51,6 @@ C = [0 0 0 1 0;
 %Initial - beta, phi, p, r, delta_a
 x0 =       [0    0    0  0  0];
 
-
+%% Anti windup
+antiWindupBound = 0.3;
 

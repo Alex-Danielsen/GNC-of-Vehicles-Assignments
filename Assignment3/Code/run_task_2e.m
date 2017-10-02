@@ -5,8 +5,9 @@ close all
 modelParms
 
 %% Run Sim
+modelName = 'Sim2e';
 sim('chi_reference.slx');
-sim('Sim2e.slx');
+sim(strcat(modelName, '.slx'));
 
 %% Plot results
 plotting

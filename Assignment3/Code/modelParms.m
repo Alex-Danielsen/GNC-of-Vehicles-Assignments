@@ -1,11 +1,21 @@
 %% Sim Parms
-total_time = 100;
+%Input values
+angle1 = deg2rad(5);
+t1     = 100;
+angle2 = deg2rad(0)-angle1;
+t2     = t1+100;
+angle3 = deg2rad(10)-angle2;
+t3     = t2+100;
+angle4 = deg2rad(-5)-angle3;
+t4     = t3+200;
 
+total_time = t4;
+%% Model Parameters
 %Constants
 alpha_phi1 = 2.87;
 alpha_phi2 = -0.65;
 g = 9.8; %m/s
-V_g = 637; % Ground speed = air speed with no wind
+V_g = 637 * 1000 / 3600; % Ground speed = air speed with no wind
 dist = deg2rad(2); %rad
 
 %parms to roll loop
@@ -48,5 +58,5 @@ C = [0 0 0 1 0;
 x0 =       [0    0    0  0  0];
 
 %% Anti windup
-antiWindupBound = 0.3;
+antiWindupBound = 0.1;
 
