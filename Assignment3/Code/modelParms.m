@@ -1,3 +1,6 @@
+%% Sim Parms
+total_time = 100;
+
 %Constants
 alpha_phi1 = 2.87;
 alpha_phi2 = -0.65;
@@ -45,6 +48,5 @@ C = [0 0 0 1 0;
 x0 =       [0    0    0  0  0];
 
 %% Anti windup
-global antiWindupBound
 antiWindupBound = 0.3;
 
