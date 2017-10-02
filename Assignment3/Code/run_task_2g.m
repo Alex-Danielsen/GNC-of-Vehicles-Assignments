@@ -5,7 +5,7 @@ clear all
 modelParms
 
 %% Run Sim
-modelName = 'Sim2e';
+modelName = 'Sim2g';
 sim('chi_reference.slx');
 sim(strcat(modelName, '.slx'));
 

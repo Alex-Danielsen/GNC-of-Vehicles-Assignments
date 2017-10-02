@@ -1,12 +1,13 @@
 clear all
-close all
+% close all
 
 %% Sim Constants
 modelParms
 
 %% Run Sim
-sim('input.slx');
-sim('Sim2f.slx');
+modelName = 'Sim2f';
+sim('chi_reference.slx');
+sim(strcat(modelName, '.slx'));
 
 %% Plot results
 plotting
