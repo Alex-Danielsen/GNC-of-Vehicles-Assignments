@@ -44,5 +44,7 @@ C = [0 0 0 1 0;
 %Initial - beta, phi, p, r, delta_a
 x0 =       [0    0    0  0  0];
 
-
+%% Anti windup
+global antiWindupBound
+antiWindupBound = 0.3;
 

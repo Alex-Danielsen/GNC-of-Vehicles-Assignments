@@ -5,7 +5,7 @@ close all
 modelParms
 
 %% Run Sim
-sim('input.slx');
+sim('chi_reference.slx');
 sim('Sim2f.slx');
 
 %% Plot results
