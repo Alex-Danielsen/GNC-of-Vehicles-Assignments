@@ -24,7 +24,7 @@ delta_a_max = deg2rad(25); %rad
 zeta_phi    = 0.707; %damping factor
 
 %parms to course loop
-W_chi       = 7;  %Beard says to choose at least 5
+W_chi       = 10;  %Beard says to choose at least 5
 zeta_chi    = 1; %Start guess at critical damping
 
 
