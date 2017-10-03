@@ -1,5 +1,5 @@
 clear all
-close all
+% close all
 
 n = 3;
 
@@ -9,7 +9,7 @@ poles = zeros(n, length(k_i_phi_vec));
 diffVec = zeros(n, length(k_i_phi_vec));
 
 legendEntry = {};
-
+figure()
 for i= 1:length(k_i_phi_vec)
     poles(:,i) = roots([1 (alpha_phi1+alpha_phi2*k_d_phi) (alpha_phi2*k_p_phi) (alpha_phi2*k_i_phi_vec(i))]);
     if(i>1)
