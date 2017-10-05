@@ -10,22 +10,31 @@ p_derivative_closed_loop = minreal(p_open_loop/(1+k_d_phi*p_open_loop));
 H_phi_open_loop = minreal((k_i_phi/s+k_p_phi)*p_derivative_closed_loop/s);
 
 % Transfer function between phi and phi_c:
-% Equal to H_phi = minreal(H_phi_open_loop/(1+H_phi_open_loop))
-H_phi = minreal(tf([k_p_phi*alpha_phi2], [1, (alpha_phi1+alpha_phi2*k_d_phi), k_p_phi*alpha_phi2]));
+% Equal to H_phi_closed_loop = minreal(tf([k_p_phi*alpha_phi2], [1, (alpha_phi1+alpha_phi2*k_d_phi), k_p_phi*alpha_phi2]));
+H_phi_closed_loop = minreal(H_phi_open_loop/(1+H_phi_open_loop));
 
 % Transfer function between chi and chi_c open loop with disturbance set to
 % zero:
 H_chi_open_loop = minreal((k_i_chi/s + k_p_chi)*H_phi*g/(V_g*s));
 
 % Transfer function between chi and chi_c closed loop:
-H_chi = minreal(H_chi_open_loop/(1+H_chi_open_loop));
+H_chi_closed_loop = minreal(H_chi_open_loop/(1+H_chi_open_loop));
 
 figure();
 hold on;
-bodeplot(H_phi);
-bodeplot(H_chi);
+bodeplot(H_phi_open_loop);
+bodeplot(H_chi_open_loop);
 legend('H_\phi', 'H_\chi with W_\chi = 10');
-title('Bodeplot of the roll closed loop and the course closed loop');
+title('Bodeplot of the roll open loop and the course open loop');
+
+hold off;
+
+figure();
+hold on;
+bodeplot(H_phi_closed_loop);
+bodeplot(H_chi_open_loop);
+legend('H_\phi_closed_loop', 'H_\chi with W_\chi = 10');
+title('Bodeplot of the roll closed loop and the course open loop');
 
 hold off;
 
@@ -49,21 +58,21 @@ H_phi_open_loop = minreal((k_i_phi/s+k_p_phi)*p_derivative_closed_loop/s);
 
 % Transfer function between phi and phi_c:
 % Equal to H_phi = minreal(H_phi_open_loop/(1+H_phi_open_loop))
-H_phi = minreal(tf([k_p_phi*alpha_phi2], [1, (alpha_phi1+alpha_phi2*k_d_phi), k_p_phi*alpha_phi2]));
+H_phi_closed_loop = minreal(tf([k_p_phi*alpha_phi2], [1, (alpha_phi1+alpha_phi2*k_d_phi), k_p_phi*alpha_phi2]));
 
 % Transfer function between chi and chi_c open loop with disturbance set to
 % zero:
 H_chi_open_loop = minreal((k_i_chi/s + k_p_chi)*H_phi*g/(V_g*s));
 
 % Transfer function between chi and chi_c closed loop:
-H_chi = minreal(H_chi_open_loop/(1+H_chi_open_loop));
+H_chi_closed_loop = minreal(H_chi_open_loop/(1+H_chi_open_loop));
 
 figure();
 hold on;
-bodeplot(H_phi);
-bodeplot(H_chi);
+bodeplot(H_phi_open_loop);
+bodeplot(H_chi_open_loop);
 legend('H_\phi', 'H_\chi with W_\chi = 1');
-title('Bodeplot of the roll closed loop and the course closed loop');
+title('Bodeplot of the roll open loop and the course open loop');
 
 hold off;
 
