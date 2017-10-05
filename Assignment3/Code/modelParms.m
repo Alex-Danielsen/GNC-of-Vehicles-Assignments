@@ -23,16 +23,16 @@ e_phi_max   = deg2rad(15); %rad
 delta_a_max = deg2rad(25); %rad
 zeta_phi    = 0.707; %damping factor
 
-%parms to course loop
-W_chi       = 7;  %Beard says to choose at least 5
-zeta_chi    = 1; %Start guess at critical damping
-
 
 %Roll loop constants
 k_p_phi = delta_a_max/e_phi_max * sign(alpha_phi2);
 omega_n_phi = sqrt(k_p_phi*alpha_phi2);
 k_d_phi = (2*zeta_phi*omega_n_phi - alpha_phi1)/alpha_phi2;
 k_i_phi = 0;
+
+%parms to course loop
+W_chi       = 10;  %Beard says to choose at least 5
+zeta_chi    = 1; %Start guess at critical damping
 
 %Course loop constants
 omega_n_chi = omega_n_phi/W_chi;
