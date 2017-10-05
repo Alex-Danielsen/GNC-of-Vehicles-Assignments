@@ -35,3 +35,9 @@ plot(phi_pl); hold on; plot(phi_c_pl)
 legend('\phi', '\phi^c')
 title('Roll'); xlabel('Time (sec)'); ylabel('Yaw (deg)')
 
+%Integrator windup
+figure()
+plot(intergratorTerm)
+title({modelName, 'Integrator term'})
+xlabel('Time (sec)'); ylabel('Affect from integrator (unitless)')
+
