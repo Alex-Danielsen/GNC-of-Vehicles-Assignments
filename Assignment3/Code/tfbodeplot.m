@@ -31,7 +31,7 @@ hold off;
 
 figure();
 margin(H_chi_open_loop);
-legend('H_\chi with W_\chi = 10');
+legend('H_\chi_open_loop with W_\chi = 10');
 
 %% Transfer functions if W_chi = 1
 W_chi = 1;
@@ -69,4 +69,4 @@ hold off;
 
 figure();
 margin(H_chi_open_loop);
-legend('H_\chi with W_\chi = 1');
+legend('H_\chi_open_loop with W_\chi = 1');
