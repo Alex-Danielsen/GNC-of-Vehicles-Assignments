@@ -29,13 +29,6 @@ title('Bodeplot of the roll open loop and the course open loop');
 
 hold off;
 
-figure();
-hold on;
-bodeplot(H_phi_closed_loop);
-bodeplot(H_chi_closed_loop);
-legend('H_\phi_closed_loop', 'H_\chi_closed_loop with W_\chi = 10');
-title('Bodeplot of the roll closed loop and the course closed loop');
-
 hold off;
 
 figure();
