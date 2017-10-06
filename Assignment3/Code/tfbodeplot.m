@@ -15,7 +15,7 @@ H_phi_closed_loop = minreal(H_phi_open_loop/(1+H_phi_open_loop));
 
 % Transfer function between chi and chi_c open loop with disturbance set to
 % zero:
-H_chi_open_loop = minreal((k_i_chi/s + k_p_chi)*H_phi*g/(V_g*s));
+H_chi_open_loop = minreal((k_i_chi/s + k_p_chi)*H_phi_closed_loop*g/(V_g*s));
 
 % Transfer function between chi and chi_c closed loop:
 H_chi_closed_loop = minreal(H_chi_open_loop/(1+H_chi_open_loop));
@@ -32,9 +32,9 @@ hold off;
 figure();
 hold on;
 bodeplot(H_phi_closed_loop);
-bodeplot(H_chi_open_loop);
-legend('H_\phi_closed_loop', 'H_\chi with W_\chi = 10');
-title('Bodeplot of the roll closed loop and the course open loop');
+bodeplot(H_chi_closed_loop);
+legend('H_\phi_closed_loop', 'H_\chi_closed_loop with W_\chi = 10');
+title('Bodeplot of the roll closed loop and the course closed loop');
 
 hold off;
 
@@ -62,7 +62,7 @@ H_phi_closed_loop = minreal(tf([k_p_phi*alpha_phi2], [1, (alpha_phi1+alpha_phi2*
 
 % Transfer function between chi and chi_c open loop with disturbance set to
 % zero:
-H_chi_open_loop = minreal((k_i_chi/s + k_p_chi)*H_phi*g/(V_g*s));
+H_chi_open_loop = minreal((k_i_chi/s + k_p_chi)*H_phi_closed_loop*g/(V_g*s));
 
 % Transfer function between chi and chi_c closed loop:
 H_chi_closed_loop = minreal(H_chi_open_loop/(1+H_chi_open_loop));

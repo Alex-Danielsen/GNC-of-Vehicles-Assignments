@@ -31,7 +31,7 @@ k_d_phi = (2*zeta_phi*omega_n_phi - alpha_phi1)/alpha_phi2;
 k_i_phi = 0;
 
 %parms to course loop
-W_chi       = 10;  %Beard says to choose at least 5
+W_chi       = 7;  %Beard says to choose at least 5
 zeta_chi    = 1; %Start guess at critical damping
 
 %Course loop constants
