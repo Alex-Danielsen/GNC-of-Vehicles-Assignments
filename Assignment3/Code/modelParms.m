@@ -2,11 +2,11 @@
 %Input values
 angle1 = deg2rad(5);
 t1     = 100;
-angle2 = deg2rad(0)-angle1;
+angle2 = deg2rad(-5);
 t2     = t1+100;
-angle3 = deg2rad(10)-angle2;
+angle3 = deg2rad(15);
 t3     = t2+100;
-angle4 = deg2rad(-5)-angle3;
+angle4 = deg2rad(-20);
 t4     = t3+200;
 
 total_time = t4;
@@ -31,7 +31,7 @@ k_d_phi = (2*zeta_phi*omega_n_phi - alpha_phi1)/alpha_phi2;
 k_i_phi = 0;
 
 %parms to course loop
-W_chi       = 7;  %Beard says to choose at least 5
+W_chi       = 10;  %Beard says to choose at least 5
 zeta_chi    = 1; %Start guess at critical damping
 
 %Course loop constants
