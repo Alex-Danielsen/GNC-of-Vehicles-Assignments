@@ -65,16 +65,38 @@ antiWindupBound = 0.05;
 
 
 %% Kalman Fileter
-A_k = [-0.322 0.052 0.028 -1.12 ;
+% Continuous
+A_kalman = [-0.322 0.052 0.028 -1.12 ;
      0      0     1     -0.001  ;
      -10.6  0     -2.87 0.46    ;
-     6.87   0     -0.04 -0.32   ;
-     0      0     0     0       
+     6.87   0     -0.04 -0.32   ;      
      ];
-B_k = [.002 0 -0.65 -0.02]';
-C_k = [0 0 0 1 0;
-     0 0 1 0 0;
-     0 1 0 0 0];
+B_kalman = [.002 0 -0.65 -0.02]';
+C_kalman = [0 0 0 1;
+     0 0 1 0;
+     0 1 0 0];
+ 
+E_kalman = diag([1 1 1 1]);
+
+% Digitalization
+h = 0.01;
+
+[Phi, Delta] = c2d(A_kalman, B_kalman, h);
+[Phi, Gamma] = c2d(A_kalman, E_kalman, h);
 
 Q = 10^-6*diag([1 1 1 1]);
 R = deg2rad(diag([2 0.5 0.2]));
+
+x_bar_0 = [0, 0, 0, 0]';
+P_bar_0 = Q;
+Phi_k = Phi;
+Delta_k = Delta;
+Gamma_k = Gamma;
+H_k = C_kalman;
+Q_k = Q;
+R_k = R;
+
+h_meas = .01;
+phi_var = 2;
+p_var   = 0.5;
+r_var   = 0.2;
