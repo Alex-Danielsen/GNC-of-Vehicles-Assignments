@@ -5,7 +5,7 @@ close all
 modelParms
 
 %% Run Sim
-modelName = 'Sim3e_simulinkKalman';
+modelName = 'Sim3e_merged';
 sim('chi_reference.slx');
 sim(strcat(modelName, '.slx'));
 
