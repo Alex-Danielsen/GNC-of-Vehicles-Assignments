@@ -10,6 +10,16 @@ else
     delta_a_pl  = timeseries(rad2deg(delta_a.data), delta_a.time);
     phi_pl = timeseries(rad2deg(phi.data), phi.time);
 end
+if(exist('x_hat', 'var'))
+    beta_hat_pl    = timeseries(rad2deg(x_hat.data(:,1)), x_hat.time);
+    phi_hat_pl     = timeseries(rad2deg(x_hat.data(:,2)), x_hat.time);
+    p_hat_pl       = timeseries(rad2deg(x_hat.data(:,3)), x_hat.time);
+    r_hat_pl       = timeseries(rad2deg(x_hat.data(:,4)), x_hat.time);
+    
+    phi_meas_pl = timeseries(phi_meas.data.*180./pi, phi_meas.time);
+    p_meas_pl = timeseries(p_meas.data.*180./pi, p_meas.time);
+    r_meas_pl = timeseries(r_meas.data.*180./pi, r_meas.time);
+end
 chi_pl   = timeseries(rad2deg(chi.data)  , chi.time);
 chi_c_pl = timeseries(rad2deg(chi_c.data), chi_c.time);
 phi_c_pl = timeseries(rad2deg(phi_c.data), phi_c.time);
@@ -41,3 +51,22 @@ plot(intergratorTerm)
 title({modelName, 'Integrator term'})
 xlabel('Time (sec)'); ylabel('Affect from integrator (unitless)')
 
+%Roll, roll rate, yaw rate
+figure()
+subplot(311)
+plot(phi_pl); hold on; plot(phi_meas_pl); plot(phi_hat_pl)
+legend('true \phi', 'measured \phi', 'kalman \phi')
+title({modelName, 'Kalman Estimates vs. Measure vs. True State', 'Roll'})
+ylabel('\phi (deg)')
+
+subplot(312)
+plot(p_pl); hold on; plot(p_meas_pl); plot(p_hat_pl)
+legend('true p', 'measured p', 'kalman p')
+title('Roll rate')
+ylabel('p (deg/s)')
+
+subplot(313)
+plot(r_pl); hold on; plot(r_meas_pl); plot(r_hat_pl)
+legend('true r', 'measured r', 'kalman r')
+title('Yaw rate')
+ylabel('r (deg/s)'); xlabel('Time (sec)')

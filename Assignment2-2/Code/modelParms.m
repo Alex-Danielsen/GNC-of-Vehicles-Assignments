@@ -96,7 +96,7 @@ H_k = C_kalman;
 Q_k = Q;
 R_k = R;
 
-h_meas = .01;
+h_meas = .001;
 phi_var = 2;
 p_var   = 0.5;
 r_var   = 0.2;
