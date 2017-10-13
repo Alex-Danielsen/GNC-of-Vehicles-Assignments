@@ -87,7 +87,7 @@ r_var   = 0.2^2;
 [Phi, Delta] = c2d(A_kalman, B_kalman, h);
 [Phi, Gamma] = c2d(A_kalman, E_kalman, h);
 
-Q = 10^-6*diag([1 1 1 1]);
+Q = 10^-8*diag([1 1 1 1]);
 R = deg2rad(deg2rad(diag([phi_var p_var r_var])));
 
 x_bar_0 = [0, 0, 0, 0]';
