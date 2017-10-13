@@ -80,12 +80,15 @@ E_kalman = diag([1 1 1 1]);
 
 % Digitalization
 h = 0.01;
+phi_var = 2^2;
+p_var   = 0.5^2;
+r_var   = 0.2^2;
 
 [Phi, Delta] = c2d(A_kalman, B_kalman, h);
 [Phi, Gamma] = c2d(A_kalman, E_kalman, h);
 
 Q = 10^-6*diag([1 1 1 1]);
-R = deg2rad(diag([2 0.5 0.2]));
+R = deg2rad(deg2rad(diag([phi_var p_var r_var])));
 
 x_bar_0 = [0, 0, 0, 0]';
 P_bar_0 = Q;
@@ -95,8 +98,3 @@ Gamma_k = Gamma;
 H_k = C_kalman;
 Q_k = Q;
 R_k = R;
-
-h_meas = .01;
-phi_var = 2;
-p_var   = 0.5;
-r_var   = 0.2;

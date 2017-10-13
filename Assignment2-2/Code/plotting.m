@@ -27,46 +27,46 @@ phi_c_pl = timeseries(rad2deg(phi_c.data), phi_c.time);
 
 %Course
 figure()
-subplot(311)
+subplot(211)
 plot(chi_pl); hold on; plot(chi_c_pl)
 legend('\chi', '\chi^c')
 title({modelName, strcat('\zeta_\chi = ', num2str(zeta_chi), '   W_\chi = ', num2str(W_chi)), 'Course'});  
 ylabel('course (deg)'); %xlabel('time (sec)');
 
 %Input
-subplot(312)
+subplot(212)
 plot(delta_a_pl); hold on; if(exist('x', 'var')); plot(delta_a_c_pl); end
 legend('\delta_a', '\delta_a^c')
-title('Aeleron Input');  ylabel('aeileron deflection (deg)'); xlabel('');
+title('Aeleron Input');  ylabel('aeileron deflection (deg)'); xlabel('Time (sec)');
 
 %Roll
-subplot(313)
-plot(phi_pl); hold on; plot(phi_c_pl)
-legend('\phi', '\phi^c')
-title('Roll'); xlabel('Time (sec)'); ylabel('Yaw (deg)')
+% subplot(313)
+% plot(phi_pl); hold on; plot(phi_c_pl)
+% legend('\phi', '\phi^c')
+% title('Roll'); xlabel('Time (sec)'); ylabel('Yaw (deg)')
 
 %Integrator windup
-figure()
-plot(intergratorTerm)
-title({modelName, 'Integrator term'})
-xlabel('Time (sec)'); ylabel('Affect from integrator (unitless)')
+% figure()
+% plot(intergratorTerm)
+% title({modelName, 'Integrator term'})
+% xlabel('Time (sec)'); ylabel('Affect from integrator (unitless)')
 
 %Roll, roll rate, yaw rate
 figure()
 subplot(311)
-plot(phi_pl); hold on; plot(phi_hat_pl); plot(phi_meas_pl); 
-legend('true \phi', 'kalman \phi', 'measured \phi')
+plot(phi_meas_pl); hold on; plot(phi_pl); plot(phi_hat_pl); 
+legend('measured \phi', 'true \phi', 'kalman \phi')
 title({modelName, 'Kalman Estimates vs. Measure vs. True State', 'Roll'})
 ylabel('\phi (deg)')
 
 subplot(312)
-plot(p_pl); hold on; plot(p_hat_pl); plot(p_meas_pl)
-legend('true p', 'kalman p', 'measured p')
+plot(p_meas_pl); hold on; plot(p_pl); plot(p_hat_pl)
+legend('measured p', 'true p', 'kalman p')
 title('Roll rate')
 ylabel('p (deg/s)')
 
 subplot(313)
-plot(r_pl); hold on; plot(r_hat_pl); plot(r_meas_pl);
-legend('true r', 'kalman r', 'measured r')
+plot(r_meas_pl); hold on; plot(r_pl); plot(r_hat_pl);
+legend('measured r', 'true r', 'kalman r')
 title('Yaw rate')
 ylabel('r (deg/s)'); xlabel('Time (sec)')
