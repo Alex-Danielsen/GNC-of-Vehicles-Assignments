@@ -54,19 +54,19 @@ xlabel('Time (sec)'); ylabel('Affect from integrator (unitless)')
 %Roll, roll rate, yaw rate
 figure()
 subplot(311)
-plot(phi_pl); hold on; plot(phi_meas_pl); plot(phi_hat_pl)
-legend('true \phi', 'measured \phi', 'kalman \phi')
+plot(phi_pl); hold on; plot(phi_hat_pl); plot(phi_meas_pl); 
+legend('true \phi', 'kalman \phi', 'measured \phi')
 title({modelName, 'Kalman Estimates vs. Measure vs. True State', 'Roll'})
 ylabel('\phi (deg)')
 
 subplot(312)
-plot(p_pl); hold on; plot(p_meas_pl); plot(p_hat_pl)
-legend('true p', 'measured p', 'kalman p')
+plot(p_pl); hold on; plot(p_hat_pl); plot(p_meas_pl)
+legend('true p', 'kalman p', 'measured p')
 title('Roll rate')
 ylabel('p (deg/s)')
 
 subplot(313)
-plot(r_pl); hold on; plot(r_meas_pl); plot(r_hat_pl)
-legend('true r', 'measured r', 'kalman r')
+plot(r_pl); hold on; plot(r_hat_pl); plot(r_meas_pl);
+legend('true r', 'kalman r', 'measured r')
 title('Yaw rate')
 ylabel('r (deg/s)'); xlabel('Time (sec)')

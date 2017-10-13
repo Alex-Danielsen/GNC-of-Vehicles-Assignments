@@ -79,7 +79,7 @@ C_kalman = [0 0 0 1;
 E_kalman = diag([1 1 1 1]);
 
 % Digitalization
-h = 0.0001;
+h = 0.01;
 
 [Phi, Delta] = c2d(A_kalman, B_kalman, h);
 [Phi, Gamma] = c2d(A_kalman, E_kalman, h);
@@ -96,7 +96,7 @@ H_k = C_kalman;
 Q_k = Q;
 R_k = R;
 
-h_meas = .00001;
+h_meas = .01;
 phi_var = 2;
 p_var   = 0.5;
 r_var   = 0.2;
