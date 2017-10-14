@@ -20,16 +20,17 @@ if(exist('x_hat', 'var'))
     p_meas_pl = timeseries(p_meas.data.*180./pi, p_meas.time);
     r_meas_pl = timeseries(r_meas.data.*180./pi, r_meas.time);
 end
-chi_pl   = timeseries(rad2deg(chi.data)  , chi.time);
-chi_c_pl = timeseries(rad2deg(chi_c.data), chi_c.time);
-phi_c_pl = timeseries(rad2deg(phi_c.data), phi_c.time);
+chi_pl     = timeseries(rad2deg(chi.data)  , chi.time);
+chi_c_pl   = timeseries(rad2deg(chi_c.data), chi_c.time);
+chi_hat_pl = timeseries(rad2deg(chi_hat.data), chi_hat.time);
+phi_c_pl   = timeseries(rad2deg(phi_c.data), phi_c.time);
 
 
 %Course
 figure()
 subplot(211)
-plot(chi_pl); hold on; plot(chi_c_pl)
-legend('\chi', '\chi^c')
+plot(chi_pl); hold on; plot(chi_c_pl); plot(chi_hat_pl)
+legend('\chi', '\chi^c', 'estimated \chi')
 title({modelName, strcat('\zeta_\chi = ', num2str(zeta_chi), '   W_\chi = ', num2str(W_chi)), 'Course'});  
 ylabel('course (deg)'); %xlabel('time (sec)');
 
@@ -39,17 +40,6 @@ plot(delta_a_pl); hold on; if(exist('x', 'var')); plot(delta_a_c_pl); end
 legend('\delta_a', '\delta_a^c')
 title('Aeleron Input');  ylabel('aeileron deflection (deg)'); xlabel('Time (sec)');
 
-%Roll
-% subplot(313)
-% plot(phi_pl); hold on; plot(phi_c_pl)
-% legend('\phi', '\phi^c')
-% title('Roll'); xlabel('Time (sec)'); ylabel('Yaw (deg)')
-
-%Integrator windup
-% figure()
-% plot(intergratorTerm)
-% title({modelName, 'Integrator term'})
-% xlabel('Time (sec)'); ylabel('Affect from integrator (unitless)')
 
 %Roll, roll rate, yaw rate
 figure()
